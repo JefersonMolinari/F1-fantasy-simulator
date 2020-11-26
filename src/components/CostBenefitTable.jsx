@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import TableHeader from './CostBenefitTableHeader';
+import TableHeader from './TableHeader';
 import TableBody from './CostBenefitTableBody';
 
 function CostBenefitTable(params) {
@@ -72,16 +72,20 @@ function CostBenefitTable(params) {
         }
         return 0;
     }
+    const tableHeader = [
+        { title: "POS", onClick: null },
+        { title: "Name", onClick: name },
+        { title: "Points", onClick: points },
+        { title: "Price", onClick: price },
+        { title: "Points/$mi", onClick: pointsPerMi }
+    ]
 
     return <table className="box">
         <TableHeader
-            onPointsPerMi={pointsPerMi}
-            onPrice={price}
-            onPoints={points}
-            onName={name}
+            headers={tableHeader}
         />
         <TableBody 
-            driversList={dataList}
+            dataList={dataList}
         />
     </table>
 }

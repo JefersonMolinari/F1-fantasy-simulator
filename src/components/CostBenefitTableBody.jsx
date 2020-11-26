@@ -2,11 +2,11 @@ import React from 'react';
 
 
 function TableBody(params) {
-    const { driversList } = params
+    const { dataList } = params
   return (
     <tbody>
     {/* TODO: Refactor to make TR a separate component and make table body a generic component for any table */}
-      {driversList.map((row, index) =>  (
+      {dataList.map((row, index) =>  (
           <tr key={index}>
             <td>{index+1}</td>
             <td>{row.name}</td>
