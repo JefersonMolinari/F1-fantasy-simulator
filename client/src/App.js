@@ -1,16 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import CostBenefitTable from './components/CostBenefitTable';
-import {driversList, constructorsList} from './costBenefitArray';
+import axios from 'axios';
 import './App.css';
 
-function App() {
-  const [serverResponse, setServerResponse] = useState("");
+const ROOT_URL = "http://localhost:9000/testServer";
 
+function App() {
+  const [isLoadingDrivers, setIsLoadingDrivers] = useState(true);
+  const [isLoadingConstructors, setIsLoadingConstructors] = useState(true);
+  const [drivers, setDrivers] = useState([]);
+  const [constructors, setConstructors] = useState([]);
+  
   function callAPI() {
-    fetch("http://localhost:9000/testServer")
-        .then(res => res.text())
-        .then(res => setServerResponse(res))
-        .catch(err => err);
+    axios.get(ROOT_URL + "/drivers")
+        .then(res => {
+          setDrivers(res.data);
+          setIsLoadingDrivers(false);
+          console.log("Response from Server");
+          console.log(res);
+        })
+        .catch(err => console.warn(`Error: ${err}`));
+
+    axios.get(ROOT_URL + "/constructors")
+        .then(res => {
+          setConstructors(res.data);
+          setIsLoadingConstructors(false);
+          console.log("Response from Server");
+          console.log(res);
+        })
+        .catch(err => console.warn(`Error: ${err}`));
   }
 
   useEffect(() => {
@@ -19,10 +37,15 @@ function App() {
 
   return (
     <div className="App">
-      <p className="App-intro">{serverResponse}</p>
-      <p>FANTASY SIMULATOR</p>
-      <CostBenefitTable dataList={driversList}/>
-      <CostBenefitTable dataList={constructorsList}/>
+      <h1>FANTASY SIMULATOR</h1>
+      {isLoadingDrivers ? 
+        <span>...Loading</span> : 
+        <CostBenefitTable dataList={drivers}/>
+       }
+      {isLoadingConstructors ? 
+        <span>...Loading</span> : 
+        <CostBenefitTable dataList={constructors}/>
+      }
     </div>
   );
 }
