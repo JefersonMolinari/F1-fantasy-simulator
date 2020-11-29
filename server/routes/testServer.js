@@ -3,7 +3,8 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-mongoose.connect('mongodb+srv://admin-jeferson:Test2020@cluster0.xerkq.mongodb.net/f1DB', {useNewUrlParser: true, useUnifiedTopology: true});
+const connectionString = 'mongodb+srv://' + process.env.MONGO_ATLAS_CREDENTIALS + '@cluster0.xerkq.mongodb.net/f1DB';
+mongoose.connect(connectionString, {useNewUrlParser: true, useUnifiedTopology: true});
 
 // const raceDetailSchema = new Schema ({
 //     name: String,
