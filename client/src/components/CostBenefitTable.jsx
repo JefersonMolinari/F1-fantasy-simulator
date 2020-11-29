@@ -3,8 +3,6 @@ import TableHeader from './TableHeader';
 import TableBody from './CostBenefitTableBody';
 
 function CostBenefitTable(params) {
-    // objs.sort((a,b) => (a.last_nom > b.last_nom) ? 1 : ((b.last_nom > a.last_nom) ? -1 : 0)); 
-
     const [dataList, setDataList] = useState([...params.dataList]);
 
     function pointsPerMi() {
