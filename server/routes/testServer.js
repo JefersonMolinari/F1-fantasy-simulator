@@ -82,7 +82,6 @@ router.get("/drivers", (req, res, next) => {
     DriverPoint.find({}, (err, drivers) =>{
         if (!err){
             pointsArray.driversPoints.push(...drivers);
-            console.log("loads DR array");
             res.redirect("/testServer/");
         } else{
             console.log(err);
@@ -95,7 +94,6 @@ router.get("/constructors", (req, res, next) => {
     ConstructorPoint.find({}, (err, constructors) =>{
         if (!err){
             pointsArray.constructorsPoints.push(...constructors);
-            console.log("loads CR array");
             res.redirect("/testServer/");
         } else{
             console.log(err);
