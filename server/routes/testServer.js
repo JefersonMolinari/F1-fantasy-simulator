@@ -66,25 +66,16 @@ const pointsArray = {
 };
 
 router.get("/", (req, res, next) => {
-    console.log("GOT HERE");
-    if (!pointsArray.driversPoints.length || !pointsArray.constructorsPoints.length ) {
-        console.log("IS EMPTY??");
-        console.log(pointsArray);
-        if (!pointsArray.driversPoints.length) {
-            console.log("driver array empty");
-            res.redirect("/testServer/drivers");
-        }
-        console.log("CHECK CR");
-        if (!pointsArray.constructorsPoints.length) {
-            console.log("CR array empty");
-            res.redirect("/testServer/constructors");
-        } else {
-            console.log("Why came here");
-        }
-    } else {
-        console.log("/: array NOT empty");
-        res.send(pointsArray)
+    console.log(pointsArray);
+    if (!pointsArray.driversPoints.length) {
+        res.redirect("/testServer/drivers");
     }
+    
+    if (!pointsArray.constructorsPoints.length) {
+        res.redirect("/testServer/constructors");
+    }
+    
+    res.send(pointsArray);
 });
 
 router.get("/drivers", (req, res, next) => {
@@ -111,22 +102,6 @@ router.get("/constructors", (req, res, next) => {
             res.redirect("/testServer/");
         }
     });
-});
-
-router.put('/', (req, res) => {
-// PUT controller function 
-});
-
-router.post('/', (req, res) => {
-// POST controller function 
-});
-
-router.patch('/', (req, res) => {
-// PATCH controller function 
-});
-
-router.delete('/', (req, res) => {
-// DELETE controller function 
 });
 
 module.exports = router;
