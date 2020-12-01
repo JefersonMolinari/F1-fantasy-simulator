@@ -3,28 +3,17 @@ import CostBenefitTable from './components/CostBenefitTable';
 import axios from 'axios';
 import './App.css';
 
-const ROOT_URL = "http://localhost:9000/testServer";
+const ROOT_URL = "http://localhost:9000";
 
 function App() {
-  const [isLoadingDrivers, setIsLoadingDrivers] = useState(true);
-  const [isLoadingConstructors, setIsLoadingConstructors] = useState(true);
-  const [drivers, setDrivers] = useState([]);
-  const [constructors, setConstructors] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [data, setData] = useState({});
   
   function callAPI() {
-    axios.get(ROOT_URL + "/drivers")
+    axios.get(ROOT_URL + "/testServer")
         .then(res => {
-          setDrivers(res.data);
-          setIsLoadingDrivers(false);
-          console.log("Response from Server");
-          console.log(res);
-        })
-        .catch(err => console.warn(`Error: ${err}`));
-
-    axios.get(ROOT_URL + "/constructors")
-        .then(res => {
-          setConstructors(res.data);
-          setIsLoadingConstructors(false);
+          setData(res.data);
+          setIsLoading(false);
           console.log("Response from Server");
           console.log(res);
         })
@@ -38,13 +27,13 @@ function App() {
   return (
     <div className="App">
       <h1>FANTASY SIMULATOR</h1>
-      {isLoadingDrivers ? 
+      {isLoading ? 
         <span>...Loading</span> : 
-        <CostBenefitTable dataList={drivers}/>
+        <CostBenefitTable dataList={data.driversPoints}/>
        }
-      {isLoadingConstructors ? 
+      {isLoading ? 
         <span>...Loading</span> : 
-        <CostBenefitTable dataList={constructors}/>
+        <CostBenefitTable dataList={data.constructorsPoints}/>
       }
     </div>
   );

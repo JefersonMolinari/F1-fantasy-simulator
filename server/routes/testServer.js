@@ -60,17 +60,42 @@ const pointsSchema = new Schema ({
 const DriverPoint = mongoose.model("DriverPoint", pointsSchema);
 const ConstructorPoint = mongoose.model("ConstructorPoint", pointsSchema);
 
+const pointsArray = {
+    driversPoints: [],
+    constructorsPoints: []
+};
+
 router.get("/", (req, res, next) => {
-    res.send("Server is worKING properly AYE!!!");
+    console.log("GOT HERE");
+    if (!pointsArray.driversPoints.length || !pointsArray.constructorsPoints.length ) {
+        console.log("IS EMPTY??");
+        console.log(pointsArray);
+        if (!pointsArray.driversPoints.length) {
+            console.log("driver array empty");
+            res.redirect("/testServer/drivers");
+        }
+        console.log("CHECK CR");
+        if (!pointsArray.constructorsPoints.length) {
+            console.log("CR array empty");
+            res.redirect("/testServer/constructors");
+        } else {
+            console.log("Why came here");
+        }
+    } else {
+        console.log("/: array NOT empty");
+        res.send(pointsArray)
+    }
 });
 
 router.get("/drivers", (req, res, next) => {
     DriverPoint.find({}, (err, drivers) =>{
         if (!err){
-            res.send(drivers);
+            pointsArray.driversPoints.push(...drivers);
+            console.log("loads DR array");
+            res.redirect("/testServer/");
         } else{
             console.log(err);
-            res.send([]);
+            res.redirect("/testServer/");
         }
     });
 });
@@ -78,10 +103,12 @@ router.get("/drivers", (req, res, next) => {
 router.get("/constructors", (req, res, next) => {
     ConstructorPoint.find({}, (err, constructors) =>{
         if (!err){
-            res.send(constructors);
+            pointsArray.constructorsPoints.push(...constructors);
+            console.log("loads CR array");
+            res.redirect("/testServer/");
         } else{
             console.log(err);
-            res.send([]);
+            res.redirect("/testServer/");
         }
     });
 });
