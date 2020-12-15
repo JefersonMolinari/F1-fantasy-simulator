@@ -1,55 +1,79 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require('mongoose');
+const { init } = require("../app");
 const { Schema } = mongoose;
 
 const connectionString = 'mongodb+srv://' + process.env.MONGO_ATLAS_CREDENTIALS + '@cluster0.xerkq.mongodb.net/f1DB';
 mongoose.connect(connectionString, {useNewUrlParser: true, useUnifiedTopology: true});
 
-// const raceDetailSchema = new Schema ({
-//     name: String,
-//     // Date format: '1987-10-26'
-//     date: Date,
-//     track: String,
-// });
-// const raceSchema = new Schema ({
-//     raceDetail: raceDetailSchema,
-//     qualyfication: String,
-//     raceStart: String,
-//     raceFinish: String
-// });
+const seasonSchema = new Schema ({
+    year: Number,
+    completedRaces: Number,
+    championDriverId: String,
+    championTemId: String
+});
 
-// const driverSchema = new Schema ({
-//     lastName: String,
-//     fisrtName: String,
-//     shortName: String,
-//     imgPath: String,
-//     dob: Date,
-//     worldChampionships: Number,
-//     driverNumber: Number,
-//     InitialValue: Number,
-//     sentiment: Number,
-//     qualyStreak: Number,
-//     raceStreak: Number,
-//     team: constructorSchema,
-//     races: [raceSchema]
-// });
+const raceSchema = new Schema ({
+    id: String,
+    gpname: String,
+    shortName: String,
+    // Date format: '1987-10-26'
+    date: Date,
+    track: String,
+    roundNumber: Number
+});
 
-// const constructorSchema = new Schema ({
-//     name: String,
-//     teamPrincipal: String,
-//     carModel: String,
-//     engine: String,
-//     logoPath: String,
-//     carImgpath: String,
-//     firstEntry: Number,
-//     worldChampionships: Number,
-//     InitialValue: Number,
-//     sentiment: Number,
-//     qualyStreak: Number,
-//     raceStreak: Number,
-//     drivers: [driverSchema]
-// });
+const raceResultSchema = new Schema ({
+    raceId: String,
+    driverId: String,
+    qualyfication: String,
+    raceStart: String,
+    raceFinish: String,
+    fastestLap: Boolean,
+    priceAtRace: Number
+});
+
+const driverSchema = new Schema ({
+    id: String,
+    lastName: String,
+    fisrtName: String,
+    nationality: String,
+    imgPath: String,
+    dob: Number,
+    worldChampionships: Number,
+    driverNumber: Number,
+    championshipPoints: Number,
+    initialPrice: Number,
+    currentPrice: Number,
+    sentiment: Number,
+    teamId: String
+});
+
+const constructorSchema = new Schema ({
+    id: String,
+    name: String,
+    teamPrincipal: String,
+    carModel: String,
+    teamColor: String,
+    engine: String,
+    logoPath: String,
+    carImgpath: String,
+    firstEntry: Number,
+    worldChampionships: Number,
+    championshiPoints: Number,
+    initialPrice: Number,
+    currentPrice: Number,
+    sentiment: Number,
+    driversId: [String]
+});
+
+const Season = mongoose.model("Season", seasonSchema);
+const Race = mongoose.model("Race", raceSchema);
+const RaceResult = mongoose.model("RaceResult", raceResultSchema);
+const Driver = mongoose.model("Driver", driverSchema);
+const Constructor = mongoose.model("Constructor", constructorSchema);
+
 
 const pointsSchema = new Schema ({
     points: Number,
@@ -66,7 +90,6 @@ const pointsArray = {
 };
 
 router.get("/", (req, res, next) => {
-    console.log(pointsArray);
     if (!pointsArray.driversPoints.length) {
         res.redirect("/testServer/drivers");
     }
