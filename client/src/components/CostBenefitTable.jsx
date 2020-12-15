@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import TableHeader from './TableHeader';
-import TableBody from './CostBenefitTableBody';
+import TableBody from './TableBody';
 
 function CostBenefitTable(params) {
     const [dataList, setDataList] = useState(params.dataList);

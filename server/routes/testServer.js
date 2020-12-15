@@ -104,7 +104,7 @@ router.get("/", (req, res, next) => {
 router.get("/drivers", (req, res, next) => {
     DriverPoint.find({}, (err, drivers) =>{
         if (!err){
-            pointsArray.driversPoints.push(...drivers);
+            pointsArray.driversPoints = restructureDataObject(drivers);
             res.redirect("/testServer/");
         } else{
             console.log(err);
@@ -116,7 +116,7 @@ router.get("/drivers", (req, res, next) => {
 router.get("/constructors", (req, res, next) => {
     ConstructorPoint.find({}, (err, constructors) =>{
         if (!err){
-            pointsArray.constructorsPoints.push(...constructors);
+            pointsArray.constructorsPoints = restructureDataObject(constructors);
             res.redirect("/testServer/");
         } else{
             console.log(err);
@@ -124,5 +124,19 @@ router.get("/constructors", (req, res, next) => {
         }
     });
 });
+
+function restructureDataObject(array) {
+    const restructuredObjectArray = [];
+    array.map(obj => {
+        restructuredObjectArray.push({
+            name: obj.name,
+            points: obj.points,
+            price: obj.price,
+            pointsPerMi: Number((obj.points/obj.price).toFixed(2))
+        });
+    });
+
+    return restructuredObjectArray;
+};
 
 module.exports = router;
