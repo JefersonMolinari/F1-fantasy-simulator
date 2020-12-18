@@ -206,4 +206,4 @@ function calculatePositionChangePoints(raceStartPos, raceFinishPos) {
     return points;
 }
 
-export default calculateRaceWeekPointsDriver;
+export default calculateRaceWeekPoints;
