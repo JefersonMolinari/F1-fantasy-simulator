@@ -76,34 +76,34 @@ const DSQ = "DSQ";
 //Calculate race week points from team and drivers
 function calculateRaceWeekPoints(constructor, driver1, driver2) {
     const {
-        qualy_streak,
-        race_streak
+        qualyStreak,
+        raceStreak
     } = constructor;
 
     //Caculate raceWeekPoints for Driver 1
-    const ptDr1 = calculateRaceWeekPointsDriver(driver1, driver2.qualy, driver2.race_finish);
+    const ptDr1 = calculateRaceWeekPointsDriver(driver1, driver2.qualyfication, driver2.raceFinish);
     const pointsDriver1 = ptDr1.driver;
 
     //Caculate raceWeekPoints for Driver 2
-    const ptDr2 = calculateRaceWeekPointsDriver(driver2, driver1.qualy, driver1.race_finish);
+    const ptDr2 = calculateRaceWeekPointsDriver(driver2, driver1.qualyfication, driver1.raceFinish);
     const pointsDriver2 = ptDr2.driver;
 
     //Caculate raceWeekPoints for Team
     let pointsCr = ptDr1.constructor + ptDr2.constructor;
 
     //Add Streak points, from qualifying, to Team
-    if (qualy_streak == STREAK_LENGHT_CR) {
+    if (qualyStreak == STREAK_LENGHT_CR) {
         pointsCr += STREAK_QUALY_TOP_10_CR;
     }
     //Add Streak points, from race, to Team
-    if (race_streak == STREAK_LENGHT_CR) {
+    if (raceStreak == STREAK_LENGHT_CR) {
         pointsCr += STREAK_RACE_TOP_10_CR;
     }
 
     return {
-        driver_1:  pointsDriver1,
-        driver_2:  pointsDriver2,
-        constructor:  pointsCr
+        constructor:  pointsCr,
+        driver1:  pointsDriver1,
+        driver2:  pointsDriver2
     };
 
 }
@@ -120,27 +120,27 @@ function calculateRaceWeekPointsDriver(driver, teammateQualy, teammateRaceFinish
 }
 
 //Calculate points from Qualifying session -- receive driver info and teammate Qualifying result.
-function calculateQualyPoints(driver, mate_qualy) {
+function calculateQualyPoints(driver, mateQualy) {
     const {
-        qualy,
-        qualy_streak
+        qualyfication,
+        qualyStreak
     } = driver;
 
     //Compute points according to driver result on Qualifying
-    let pointsDriver = QUALIFYING_POINTS[qualy];
+    let pointsDriver = QUALIFYING_POINTS[qualyfication];
 
     //Compute points to Team unless driver didn't finish the race (DNQ, DNS or DSQ result in negative points)
     let pointsCr = Math.max(pointsDriver, 0);
 
     //Add points from being ahead of teammate, if both drivers don't finish the race, neither drive score points.
-    if (qualy != DNQ && qualy != DNS && qualy != DSQ) {
-        if (mate_qualy == DNQ || mate_qualy == DNS || mate_qualy == DSQ || qualy < mate_qualy) {
+    if (qualyfication != DNQ && qualyfication != DNS && qualyfication != DSQ) {
+        if (mateQualy == DNQ || mateQualy == DNS || mateQualy == DSQ || Number(qualyfication) < Number(mateQualy)) {
             pointsDriver += QUALY_AHEAD_OF_MATE;
         }
     }
 
     //Add Streak points from qualifying
-    if (qualy_streak == STREAK_LENGHT_DRIVER) {
+    if (qualyStreak == STREAK_LENGHT_DRIVER) {
         pointsDriver += STREAK_QUALY_TOP_10_DRIVER;
     }
 
@@ -148,37 +148,37 @@ function calculateQualyPoints(driver, mate_qualy) {
 }
 
 //Calculate points from Qualifying session -- receive driver info and teammate Race result.
-function calculateRacePoints(driver, mate_race_finish) {
+function calculateRacePoints(driver, mateRaceFinish) {
     const {
-        race_start,
-        race_finish,
-        fastest_lap,
-        race_streak
+        raceStart,
+        raceFinish,
+        fastestLap,
+        raceStreak
     } = driver;
 
     let pointsCr = 0;
     //Compute points according to driver result on Qualifying
-    let pointsDriver = RACE_POINTS[race_finish];
+    let pointsDriver = RACE_POINTS[raceFinish];
 
     //If drive finish the race, calculate position-change and ahead-of-teammate points.
-    if (race_finish != DNF && race_finish != DNS && race_finish != DSQ) {
+    if (raceFinish != DNF && raceFinish != DNS && raceFinish != DSQ) {
 
         //Add/Remove points based on position change from Start to End of the race
-        pointsDriver += calculatePositionChangePoints(race_start, race_finish);
+        pointsDriver += calculatePositionChangePoints(raceStart, raceFinish);
         //Points Added to TEAM unless driver didn't finish the race.
         pointsCr = pointsDriver;
 
          //Add points from being ahead of teammate, if both are DNQ, DNS or DSQ, neither drive score points.
-        if (mate_race_finish == DNF || mate_race_finish == DNS || mate_race_finish == DSQ || race_finish < mate_race_finish) {
+        if (mateRaceFinish == DNF || mateRaceFinish == DNS || mateRaceFinish == DSQ || Number(raceFinish) < Number(mateRaceFinish)) {
             pointsDriver += RACE_AHEAD_OF_MATE;
         }
     }
 
     //App points if achieved fastest lap
-    pointsDriver += fastest_lap ? FASTEST_LAP : 0;
+    pointsDriver += fastestLap ? FASTEST_LAP : 0;
 
     //Add Streak points from race
-    if (race_streak == STREAK_LENGHT_DRIVER) {
+    if (raceStreak == STREAK_LENGHT_DRIVER) {
         pointsDriver += STREAK_RACE_TOP_10_DRIVER;
     }
 
@@ -206,4 +206,4 @@ function calculatePositionChangePoints(raceStartPos, raceFinishPos) {
     return points;
 }
 
-export default calculateRaceWeekPoints;
+module.exports = calculateRaceWeekPoints;
