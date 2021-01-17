@@ -15,8 +15,8 @@
 1. In a terminal, clone this repository and navigate to project directory `cd F1-fantasy-simulator`. 
 2. To install all necessary packages, simply run the utility file `node yarn-install.js`. This file will look for package.json files recursively and install the dependencies on each folder of the project where a package.json file is present.    
 3. After that you should be ready to startup the project. Open two terminal instances at the project root level, then run:
-  `cd server && yarn start` in one terminal instance to start the server at port `9000`.
-  `cd client && yarn start` at the the other terminal instance to start the client at port `3000`. A new browser tab should be open automatically. 
+   1. `cd server && yarn start` in one terminal instance to start the server at port `9000`.
+   2. `cd client && yarn start` at the the other terminal instance to start the client at port `3000`. A new browser tab should be open automatically. 
 
 ### Progress:
 - [x] Build MongoDB
