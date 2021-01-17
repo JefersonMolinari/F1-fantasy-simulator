@@ -4,6 +4,7 @@
 - [F1-fantasy-simulator](#F1-fantasy-simulator)
   - [Getting started](#getting-started)
     - [Installation](#installation)
+    - [Progress](#progress)
     - [TODO](#todo)
 
 ## Getting started
